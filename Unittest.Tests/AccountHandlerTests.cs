@@ -42,6 +42,42 @@ namespace Unittest.Tests
 
         }
 
+        [Fact]
+        public void HowManyPointsToNextLevel_BasicCustomer()
+        {
+            // Arrange
+            var account = new Account("Test Testberg", 0);
+            var mockLevelChecker = new Mock<ILevelChecker>();
+            mockLevelChecker.Setup(x => x.CheckLevel(account)).Returns(CustomerLevels.Basic);
+            mockLevelChecker.Setup(x => x.Gold).Returns(50);
+            var accountHandler = new AccountHandler(mockLevelChecker.Object);
+            var expected = 50;
+
+            // Act
+            int actual = accountHandler.HowManyPointsToNextLevel(account);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void HowManyPointsToNextLevel_GoldCustomer()
+        {
+            // Arrange
+            var account = new Account("Test Testberg", 50);
+            var mockLevelChecker = new Mock<ILevelChecker>();
+            mockLevelChecker.Setup(x => x.CheckLevel(account)).Returns(CustomerLevels.Gold);
+            mockLevelChecker.Setup(x => x.Platinum).Returns(200);
+            var accountHandler = new AccountHandler(mockLevelChecker.Object);
+            var expected = 150;
+
+            // Act
+            int actual = accountHandler.HowManyPointsToNextLevel(account);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
 
     }
 }

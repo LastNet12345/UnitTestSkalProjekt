@@ -3,6 +3,8 @@
     public class AccountHandler
     {
         private const int discountBasic = 0;
+        private const int discountGold = 30;
+        private const int discountPlatinum = 50;
 
         private readonly ILevelChecker levelChecker;
 
@@ -13,18 +15,38 @@
 
         public int GiveDiscount(Account account)
         {
-            if (levelChecker.CheckLevel(account) == CustomerLevels.Basic)
+
+            var customerLevel = levelChecker.CheckLevel(account);
+
+            if (customerLevel == CustomerLevels.Basic)
             {
                 return discountBasic;
             }
-            if (levelChecker.CheckLevel(account) == CustomerLevels.Gold)
+            if (customerLevel == CustomerLevels.Gold)
             {
-                return 30;
+                return discountGold;
             }
             else
             {
-                return 50;
+                return discountPlatinum;
             }
+
+        }
+
+        public int HowManyPointsToNextLevel(Account account)
+        {
+            var customerLevel = levelChecker.CheckLevel(account);
+
+            if (customerLevel == CustomerLevels.Basic)
+            {
+                return levelChecker.Gold - account.PointBalance;
+            }
+            if (customerLevel == CustomerLevels.Gold)
+            {
+                return levelChecker.Platinum - account.PointBalance;
+            }
+
+            return 0;
 
         }
     }
