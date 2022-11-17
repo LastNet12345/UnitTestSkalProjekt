@@ -32,7 +32,7 @@
                 throw new ArgumentOutOfRangeException(nameof(nrOfPoints));
             }
 
-            PointBalance += nrOfPoints;
+            PointBalance -= nrOfPoints;
         }
 
         public void SpendMoney(double amount)
